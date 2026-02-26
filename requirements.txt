@@ -1,0 +1,19 @@
+# Core
+pyyaml>=6.0
+
+# Windows audio session detection (WASAPI)
+pycaw>=20230407
+comtypes>=1.2
+
+# Win32 API access
+pywin32>=306
+
+# Bluetooth key encryption
+cryptography>=41.0
+
+# Cross-platform BLE (optional, for BLE transport)
+# bleak>=0.21
+
+# Testing
+pytest>=7.0
+pytest-asyncio>=0.21

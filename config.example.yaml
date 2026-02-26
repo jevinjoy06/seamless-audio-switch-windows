@@ -1,0 +1,44 @@
+# Seamless Audio Switch — Configuration (Windows)
+# Copy to config.yaml and edit for your setup.
+
+device:
+  # Display name for this device on the network
+  name: "my-laptop"
+  # Unique ID (auto-generates UUID if "auto")
+  id: "auto"
+
+coordination:
+  # Transport: "udp" (local network) or "ble" (Bluetooth LE)
+  transport: "udp"
+  # UDP broadcast port
+  port: 5555
+  # How often to broadcast intent score (seconds)
+  broadcast_interval: 1.0
+  # Time before a peer is considered offline (seconds)
+  peer_timeout: 5.0
+
+intent:
+  # Polling interval for signal sources (seconds)
+  poll_interval: 0.5
+  # Signal weights — higher weight = more influence on the intent score
+  weights:
+    audio_playing: 50
+    device_unlocked: 20
+    media_app_foreground: 15
+    device_picked_up: 10       # Mobile devices only
+    interaction_recency: 5
+
+bluetooth:
+  # Target audio device MAC address
+  target_device: "AA:BB:CC:DD:EE:FF"
+  # Enable link key sharing between trusted devices
+  key_sync:
+    enabled: true
+    # Encryption method for key transit
+    encryption: "aes-256-gcm"
+    # Shared secret for key derivation (use env var in production)
+    # shared_secret: "${BT_SYNC_SECRET}"
+
+logging:
+  level: "INFO"   # DEBUG, INFO, WARNING, ERROR
+  file: null      # Set a path to log to file
