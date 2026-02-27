@@ -84,6 +84,7 @@ class CoordinationProtocol:
         device_id: Optional[str] = None,
         on_should_connect: Optional[Callable] = None,
         on_should_disconnect: Optional[Callable] = None,
+        bluetooth_manager: Optional[object] = None,
     ):
         self.device_id = device_id or str(uuid.uuid4())
         self.device_name = device_name
@@ -96,9 +97,16 @@ class CoordinationProtocol:
         # Media control
         self.media_controller = MediaController()
 
+        # Disconnect tracking for debouncing
+        self._last_disconnect_time: float = 0.0
+
         # Callbacks for Bluetooth manager
         self._on_should_connect = on_should_connect
         self._on_should_disconnect = on_should_disconnect
+
+        # Register for unexpected disconnect notifications
+        if bluetooth_manager:
+            bluetooth_manager._on_disconnect = self._handle_disconnect
 
         self._sock: Optional[socket.socket] = None
         self._running = False
@@ -176,6 +184,39 @@ class CoordinationProtocol:
 
         if self._on_should_disconnect:
             self._on_should_disconnect()
+
+    def _handle_disconnect(self) -> None:
+        """
+        Handle unexpected Bluetooth disconnect (iPhone takeover or manual disconnect).
+
+        This is called when Bluetooth disconnects unexpectedly. It pauses media
+        and transitions to IDLE state, UNLESS we're in YIELDING state (which
+        means the disconnect was expected from coordinated handoff).
+
+        Includes debouncing to prevent rapid disconnect spam.
+        """
+        # Skip if this is an expected disconnect from coordinated yield
+        if self.state_machine.state == DeviceState.YIELDING:
+            logger.debug("Disconnect expected (yielding) - skipping pause")
+            return
+
+        # Debounce: ignore disconnects within 2 seconds of last one
+        now = time.time()
+        if now - self._last_disconnect_time < 2.0:
+            logger.debug(f"Ignoring rapid disconnect (debounce)")
+            return
+
+        self._last_disconnect_time = now
+
+        # Unexpected disconnect - pause and go idle
+        logger.info("Bluetooth disconnected - pausing media")
+        pause_result = self.media_controller.pause()
+        if pause_result:
+            logger.debug("Media paused successfully")
+        else:
+            logger.warning("Failed to pause media on disconnect")
+
+        self.state_machine.transition(DeviceState.IDLE)
 
     def _handle_peer_message(self, msg: DeviceMessage) -> None:
         """Process a message received from a peer device."""
