@@ -14,6 +14,7 @@ import uuid
 from dataclasses import dataclass, asdict
 from typing import Callable, Optional
 
+from .media import MediaController
 from .state import DeviceState, DeviceStateMachine
 
 logger = logging.getLogger(__name__)
@@ -92,6 +93,9 @@ class CoordinationProtocol:
         self.intent_score: float = 0.0
         self.audio_state: str = "idle"
 
+        # Media control
+        self.media_controller = MediaController()
+
         # Callbacks for Bluetooth manager
         self._on_should_connect = on_should_connect
         self._on_should_disconnect = on_should_disconnect
@@ -155,8 +159,21 @@ class CoordinationProtocol:
             self._on_should_connect()
 
     def _yield_connection(self) -> None:
+        """
+        Coordinated yield to Windows peer.
+
+        Pauses media BEFORE disconnecting to ensure smooth handoff.
+        """
         self.state_machine.transition(DeviceState.YIELDING)
         logger.info("Yielding audio connection to higher-priority device")
+
+        # PAUSE, THEN DISCONNECT (in order)
+        pause_result = self.media_controller.pause()
+        if pause_result:
+            logger.debug("Media paused successfully")
+        else:
+            logger.warning("Failed to pause media, continuing with disconnect")
+
         if self._on_should_disconnect:
             self._on_should_disconnect()
 
