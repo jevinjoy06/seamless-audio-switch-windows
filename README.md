@@ -28,6 +28,34 @@ This project enables automatic, seamless switching of a Bluetooth audio device b
 3. **Handoff** — The device with the highest score wins; the current device yields, and the new device connects within ~500ms–1.5s
 4. **Link Key Sync** — Bluetooth pairing keys are shared across trusted devices via the Windows Registry so no re-pairing is needed
 
+## Windows Smart Yield
+
+**Auto-pause on handoff** — Replicates the Apple ecosystem experience on Windows. When audio devices switch between devices, the yielding device automatically pauses media playback.
+
+### Supported Scenarios
+
+✅ **iPhone → Windows**: When iPhone takes over AirPods, Windows auto-pauses
+✅ **Windows ↔ Windows**: Coordinated handoff with auto-pause
+✅ **Manual Disconnect**: Turning off headphones pauses media
+⚠️ **Windows → iPhone**: Limited by iOS (Windows connects, but can't make iPhone pause)
+
+### How It Works
+
+1. **Coordinated Yield** (Windows peer wins):
+   - Higher-priority device broadcasts intent
+   - Current device: Pause media → Disconnect Bluetooth → IDLE
+   - New device: Connect Bluetooth → Resume playback
+
+2. **External Takeover** (iPhone or manual):
+   - Bluetooth disconnect detected
+   - Current device: Pause media → IDLE state
+
+### Key Components
+
+- **MediaController** (`src/coordinator/media.py`) — Sends Win32 `VK_MEDIA_PLAY_PAUSE` key via SendInput API
+- **BluetoothManager** (`src/bluetooth/manager.py`) — Background monitoring thread detects disconnects
+- **CoordinationProtocol** (`src/coordinator/protocol.py`) — Distinguishes coordinated vs unexpected disconnects
+
 ## Project Structure
 
 ```
@@ -74,17 +102,21 @@ pip install -r requirements.txt
 cp config.example.yaml config.yaml  # Edit with your settings
 ```
 
-### Run the Coordination Daemon
+### Run the Application
 
 ```bash
-python -m src.coordinator.protocol --config config.yaml
+python -m src.main --device AA:BB:CC:DD:EE:FF --name my-laptop --port 5555
 ```
 
-### Run Intent Detection
+This starts the full coordination daemon with:
+- Bluetooth monitoring for automatic disconnect detection
+- Media controller for auto-pause on handoff
+- UDP broadcast coordination protocol
 
-```bash
-python -m src.intent.detector --verbose
-```
+Optional arguments:
+- `--name`: Device name (defaults to hostname)
+- `--port`: UDP port for coordination (default: 5555)
+- `--log-level`: Logging verbosity (DEBUG, INFO, WARNING, ERROR)
 
 ## Configuration
 
