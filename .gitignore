@@ -26,3 +26,7 @@ Thumbs.db
 
 # ESP32 build
 firmware/esp32/build/
+
+# AI / agent state
+.claude/
+_bmad/
