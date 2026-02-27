@@ -7,11 +7,12 @@ connection management, and the Windows Registry for link key access.
 
 import logging
 import subprocess
+import threading
 import time
 import winreg
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Callable, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -48,10 +49,20 @@ class BluetoothManager:
         3. Verify connection state
     """
 
-    def __init__(self, target_address: Optional[str] = None):
+    def __init__(
+        self,
+        target_address: Optional[str] = None,
+        on_disconnect_callback: Optional[Callable] = None
+    ):
         self.target_address = target_address
         self._state = ConnectionState.DISCONNECTED
         self._connect_start_time: Optional[float] = None
+
+        # Connection monitoring
+        self._on_disconnect = on_disconnect_callback
+        self._monitor_thread: Optional[threading.Thread] = None
+        self._monitoring = False
+        self._last_connection_state = "disconnected"
 
     @property
     def state(self) -> ConnectionState:
@@ -257,6 +268,67 @@ class BluetoothManager:
             logger.error(f"Error reading link key: {e}")
 
         return None
+
+    def start_monitoring(self) -> None:
+        """
+        Start background thread monitoring Bluetooth connection state.
+
+        Polls connection state every 1 second and triggers the disconnect
+        callback when a connected→disconnected transition is detected.
+        """
+        if self._monitoring:
+            logger.warning("Monitoring already started")
+            return
+
+        self._monitoring = True
+        self._monitor_thread = threading.Thread(
+            target=self._monitor_loop,
+            daemon=True,
+            name="BluetoothMonitor"
+        )
+        self._monitor_thread.start()
+        logger.info("Bluetooth connection monitoring started")
+
+    def stop_monitoring(self) -> None:
+        """Stop the background monitoring thread."""
+        if not self._monitoring:
+            return
+
+        self._monitoring = False
+        if self._monitor_thread:
+            self._monitor_thread.join(timeout=2)
+            self._monitor_thread = None
+        logger.info("Bluetooth connection monitoring stopped")
+
+    def _monitor_loop(self) -> None:
+        """Background monitoring loop that polls connection state."""
+        while self._monitoring:
+            try:
+                self._check_connection_state()
+            except Exception as e:
+                logger.error(f"Monitoring error: {e}")
+
+            time.sleep(1.0)  # Poll every 1 second
+
+    def _check_connection_state(self) -> None:
+        """
+        Check current connection state and detect disconnect events.
+
+        Triggers the disconnect callback when transitioning from
+        connected to disconnected.
+        """
+        current_state = "connected" if self.is_device_connected() else "disconnected"
+
+        # Detect connected → disconnected transition
+        if self._last_connection_state == "connected" and current_state == "disconnected":
+            logger.info("Bluetooth disconnect detected")
+            if self._on_disconnect:
+                try:
+                    self._on_disconnect()
+                except Exception as e:
+                    logger.error(f"Disconnect callback error: {e}")
+
+        self._last_connection_state = current_state
 
     @staticmethod
     def _format_address(address: str) -> str:
