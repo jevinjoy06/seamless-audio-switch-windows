@@ -13,6 +13,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-001: PowerShell Injection Prevention
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 2
 **Description:** Eliminate command injection vulnerability in BluetoothManager PowerShell execution
 **Acceptance Criteria:**
 - MAC address validation with regex `^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$`
@@ -23,6 +24,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-002: Network Broadcast Security
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 1
 **Description:** Fix invalid broadcast address and implement proper UDP networking
 **Acceptance Criteria:**
 - Broadcast address is 255.255.255.255 (not 0.0.0.0)
@@ -33,6 +35,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-003: Socket Resource Cleanup
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 1
 **Description:** Add try-finally blocks for socket resource cleanup in CoordinationProtocol
 **Acceptance Criteria:**
 - All socket operations wrapped in try-finally
@@ -43,6 +46,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-004: JSON Deserialization Validation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 3
 **Description:** Validate all JSON input before deserialization to prevent CWE-502 vulnerabilities
 **Acceptance Criteria:**
 - Schema validation for DeviceMessage structure
@@ -53,6 +57,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-005: Thread Safety Locks
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 2
 **Description:** Implement threading.Lock() for BluetoothManager shared state
 **Acceptance Criteria:**
 - Lock protects _state, _monitoring, and _last_connection_state
@@ -63,6 +68,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-006: MAC Address Validation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 2
 **Description:** Validate MAC addresses before PowerShell execution
 **Acceptance Criteria:**
 - Regex validation before all PowerShell calls
@@ -72,6 +78,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-007: Async/Sync Context Separation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 2
 **Description:** Fix asyncio.sleep in synchronous context issues
 **Acceptance Criteria:**
 - No asyncio calls in sync functions
@@ -81,6 +88,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-008: CLI Input Validation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 3
 **Description:** Comprehensive input validation for all CLI arguments
 **Acceptance Criteria:**
 - Type validation for all argparse inputs
@@ -91,6 +99,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-009: Socket Error Handling
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 3
 **Description:** Proper error handling for all socket operations
 **Acceptance Criteria:**
 - Specific exception types (not bare Exception)
@@ -101,6 +110,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-010: Connection State Validation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 3
 **Description:** Add connection state validation in protocol transitions
 **Acceptance Criteria:**
 - State machine validates transitions
@@ -111,6 +121,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-011: Bluetooth Thread Race Conditions
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 2
 **Description:** Fix race conditions in Bluetooth monitoring thread
 **Acceptance Criteria:**
 - Thread-safe callback invocation
@@ -121,6 +132,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-012: PowerShell Timeout Handling
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 2
 **Description:** Add timeout handling for PowerShell commands
 **Acceptance Criteria:**
 - subprocess.run() has timeout parameter
@@ -131,6 +143,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-013: MediaController Cleanup
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 3
 **Description:** Implement proper cleanup in MediaController
 **Acceptance Criteria:**
 - Resources released on shutdown
@@ -140,6 +153,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-014: Peer Message Validation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 1
 **Description:** Add validation for peer message structure
 **Acceptance Criteria:**
 - Required fields present
@@ -150,6 +164,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-015: Memory Leak Prevention
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 1
 **Description:** Fix potential memory leaks in long-running processes
 **Acceptance Criteria:**
 - No unbounded data structure growth
@@ -160,6 +175,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-016: Bluetooth Graceful Degradation
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 6
 **Description:** Add graceful degradation for failed Bluetooth operations
 **Acceptance Criteria:**
 - Application continues on Bluetooth failure
@@ -170,6 +186,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-SEC-017: Signal Handling
 **Priority:** CRITICAL
 **Category:** Security
+**Phase:** 6
 **Description:** Implement proper signal handling for clean shutdown
 **Acceptance Criteria:**
 - SIGINT/SIGTERM handlers registered
@@ -180,6 +197,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-001: Specific Exception Handling
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 3
 **Description:** Replace overly broad exception handling with specific catches
 **Acceptance Criteria:**
 - No bare `except Exception` without specific handling
@@ -190,6 +208,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-002: Debouncing Logic
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Improve debouncing logic to not lose real disconnect events
 **Acceptance Criteria:**
 - Disconnect events processed reliably
@@ -200,6 +219,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-003: Bluetooth Retry Logic
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Add retry logic for transient Bluetooth failures
 **Acceptance Criteria:**
 - Exponential backoff implemented
@@ -210,6 +230,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-004: Logging Levels
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Implement proper logging levels (not logging sensitive MAC addresses)
 **Acceptance Criteria:**
 - DEBUG for detailed flow
@@ -221,6 +242,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-005: PowerShell Output Parsing
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 3
 **Description:** Add PowerShell output parsing validation
 **Acceptance Criteria:**
 - Parse errors handled gracefully
@@ -231,6 +253,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-006: User-Facing Error Messages
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Improve error messages for user-facing failures
 **Acceptance Criteria:**
 - Clear actionable guidance
@@ -241,6 +264,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-007: Network Interface Selection
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 1
 **Description:** Add network interface selection for multi-homed systems
 **Acceptance Criteria:**
 - CLI argument for interface selection
@@ -251,6 +275,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-008: Connection Quality Metrics
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Implement connection quality metrics
 **Acceptance Criteria:**
 - Connection success rate tracked
@@ -261,6 +286,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-009: Health Check Endpoint
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Add health check endpoint for monitoring
 **Acceptance Criteria:**
 - HTTP endpoint on configurable port
@@ -271,6 +297,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-010: State Machine Validation
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Improve state machine transition validation
 **Acceptance Criteria:**
 - All transitions validated
@@ -281,6 +308,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-011: Peer Discovery Timeout
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Add peer discovery timeout handling
 **Acceptance Criteria:**
 - Configurable discovery timeout
@@ -291,6 +319,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-012: Bluetooth Device Enumeration
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 4
 **Description:** Implement proper Bluetooth device enumeration
 **Acceptance Criteria:**
 - Lists all paired devices
@@ -301,6 +330,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-QUAL-013: Configuration Validation
 **Priority:** HIGH
 **Category:** Quality
+**Phase:** 1
 **Description:** Add configuration validation on startup
 **Acceptance Criteria:**
 - config.yaml schema validation
@@ -311,6 +341,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-001: Type Hints
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add type hints for all function signatures
 **Acceptance Criteria:**
 - All functions have parameter and return type hints
@@ -321,6 +352,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-002: Docstring Coverage
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Improve docstring coverage
 **Acceptance Criteria:**
 - All public classes documented
@@ -331,6 +363,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-003: CLI Help Text
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add CLI argument validation and help text
 **Acceptance Criteria:**
 - Comprehensive --help output
@@ -341,6 +374,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-004: Structured Logging
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Implement structured logging with JSON output
 **Acceptance Criteria:**
 - JSON log format option
@@ -351,6 +385,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-005: Performance Metrics
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add performance metrics collection
 **Acceptance Criteria:**
 - Handoff latency tracked
@@ -361,6 +396,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-006: Test Organization
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Improve test organization and naming
 **Acceptance Criteria:**
 - Tests grouped by feature
@@ -371,6 +407,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-007: Integration Edge Cases
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add integration test scenarios for edge cases
 **Acceptance Criteria:**
 - Concurrent connection tests
@@ -381,6 +418,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-008: Bluetooth Mocking
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Implement proper mocking for Bluetooth operations
 **Acceptance Criteria:**
 - Mock PowerShell execution
@@ -391,6 +429,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-009: Concurrency Stress Tests
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add concurrency stress tests
 **Acceptance Criteria:**
 - Thread safety verification
@@ -401,6 +440,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-010: Code Modularity
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Improve code modularity in large functions
 **Acceptance Criteria:**
 - Functions under 30 lines
@@ -411,6 +451,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-011: Configuration File Validation
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add configuration file validation
 **Acceptance Criteria:**
 - JSON schema for config.yaml
@@ -421,6 +462,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-012: Feature Flags
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Implement feature flags for experimental features
 **Acceptance Criteria:**
 - Feature toggle framework
@@ -431,6 +473,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-013: Telemetry
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add telemetry for debugging production issues
 **Acceptance Criteria:**
 - Opt-in telemetry
@@ -441,6 +484,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-014: Error Context
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Improve error context in exceptions
 **Acceptance Criteria:**
 - Custom exception classes
@@ -451,6 +495,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-015: User Documentation
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Add user documentation for common issues
 **Acceptance Criteria:**
 - Troubleshooting guide
@@ -461,6 +506,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-ENHANCE-016: Version Handling
 **Priority:** MEDIUM
 **Category:** Enhancement
+**Phase:** 5
 **Description:** Implement proper version handling
 **Acceptance Criteria:**
 - __version__ in main module
@@ -471,6 +517,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-001: PowerShell Injection Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add tests for PowerShell injection scenarios
 **Acceptance Criteria:**
 - Malicious input tests
@@ -481,6 +528,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-002: Malformed JSON Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add tests for malformed JSON message handling
 **Acceptance Criteria:**
 - Invalid JSON rejected
@@ -491,6 +539,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-003: Network Failure Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add tests for network failure scenarios
 **Acceptance Criteria:**
 - Socket errors simulated
@@ -501,6 +550,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-004: Concurrent Connection Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add tests for concurrent connection attempts
 **Acceptance Criteria:**
 - Multiple peers simultaneous
@@ -511,6 +561,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-005: State Machine Edge Case Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add tests for state machine edge cases
 **Acceptance Criteria:**
 - All state transitions covered
@@ -521,6 +572,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-006: Bluetooth Unavailability Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add tests for Bluetooth device unavailability
 **Acceptance Criteria:**
 - Device not found scenarios
@@ -531,6 +583,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ### REQ-TEST-007: E2E Integration Tests
 **Priority:** MEDIUM
 **Category:** Testing
+**Phase:** 6
 **Description:** Add end-to-end integration tests with real devices
 **Acceptance Criteria:**
 - Multi-device test setup
@@ -541,6 +594,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 ## Non-Functional Requirements
 
 ### REQ-NFR-001: Backward Compatibility
+**Phase:** 6
 **Description:** All existing functionality must continue working
 **Acceptance Criteria:**
 - All 27 existing tests continue passing
@@ -548,6 +602,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 - Configuration migration guide if needed
 
 ### REQ-NFR-002: Performance Baseline
+**Phase:** 6
 **Description:** No degradation from current performance baseline
 **Acceptance Criteria:**
 - Intent detection under 100ms
@@ -556,6 +611,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 - CPU usage under 5% idle
 
 ### REQ-NFR-003: Security Standards
+**Phase:** 6
 **Description:** OWASP Top 10 compliance
 **Acceptance Criteria:**
 - No CRITICAL or HIGH findings in security audit
@@ -563,6 +619,7 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 - Security testing integrated in CI
 
 ### REQ-NFR-004: Code Quality
+**Phase:** 6
 **Description:** Professional code quality standards
 **Acceptance Criteria:**
 - Type hints on all functions
@@ -570,16 +627,76 @@ Transform the working Windows Smart Yield prototype into production-ready code b
 - Code follows PEP 8
 - No pylint warnings
 
-## Traceability Matrix
+## Traceability by Phase
 
-| Requirement | Source | Test Coverage |
-|-------------|--------|---------------|
-| REQ-SEC-001 | Review: PowerShell Injection | test_powershell_injection.py |
-| REQ-SEC-002 | Review: Invalid Broadcast | test_network_broadcast.py |
-| REQ-SEC-003 | Review: Socket Cleanup | test_socket_cleanup.py |
-| REQ-SEC-004 | Review: JSON Validation | test_json_validation.py |
-| REQ-SEC-005 | Review: Thread Safety | test_thread_safety.py |
-| ... | ... | ... |
+### Phase 1: Critical Socket & Network Security (6 requirements)
+- REQ-SEC-002: Network Broadcast Security
+- REQ-SEC-003: Socket Resource Cleanup
+- REQ-SEC-014: Peer Message Validation
+- REQ-SEC-015: Memory Leak Prevention
+- REQ-QUAL-013: Configuration Validation
+- REQ-QUAL-007: Network Interface Selection
+
+### Phase 2: Thread Safety & Process Security (6 requirements)
+- REQ-SEC-001: PowerShell Injection Prevention
+- REQ-SEC-005: Thread Safety Locks
+- REQ-SEC-006: MAC Address Validation
+- REQ-SEC-007: Async/Sync Context Separation
+- REQ-SEC-011: Bluetooth Thread Race Conditions
+- REQ-SEC-012: PowerShell Timeout Handling
+
+### Phase 3: Validation & Error Handling (7 requirements)
+- REQ-SEC-004: JSON Deserialization Validation
+- REQ-SEC-008: CLI Input Validation
+- REQ-SEC-009: Socket Error Handling
+- REQ-SEC-010: Connection State Validation
+- REQ-SEC-013: MediaController Cleanup
+- REQ-QUAL-001: Specific Exception Handling
+- REQ-QUAL-005: PowerShell Output Parsing
+
+### Phase 4: Quality & Reliability Improvements (9 requirements)
+- REQ-QUAL-002: Debouncing Logic
+- REQ-QUAL-003: Bluetooth Retry Logic
+- REQ-QUAL-004: Logging Levels
+- REQ-QUAL-006: User-Facing Error Messages
+- REQ-QUAL-008: Connection Quality Metrics
+- REQ-QUAL-009: Health Check Endpoint
+- REQ-QUAL-010: State Machine Validation
+- REQ-QUAL-011: Peer Discovery Timeout
+- REQ-QUAL-012: Bluetooth Device Enumeration
+
+### Phase 5: Code Quality & Observability (16 requirements)
+- REQ-ENHANCE-001: Type Hints
+- REQ-ENHANCE-002: Docstring Coverage
+- REQ-ENHANCE-003: CLI Help Text
+- REQ-ENHANCE-004: Structured Logging
+- REQ-ENHANCE-005: Performance Metrics
+- REQ-ENHANCE-006: Test Organization
+- REQ-ENHANCE-007: Integration Edge Cases
+- REQ-ENHANCE-008: Bluetooth Mocking
+- REQ-ENHANCE-009: Concurrency Stress Tests
+- REQ-ENHANCE-010: Code Modularity
+- REQ-ENHANCE-011: Configuration File Validation
+- REQ-ENHANCE-012: Feature Flags
+- REQ-ENHANCE-013: Telemetry
+- REQ-ENHANCE-014: Error Context
+- REQ-ENHANCE-015: User Documentation
+- REQ-ENHANCE-016: Version Handling
+
+### Phase 6: Comprehensive Testing & Polish (13 requirements)
+- REQ-SEC-016: Bluetooth Graceful Degradation
+- REQ-SEC-017: Signal Handling
+- REQ-TEST-001: PowerShell Injection Tests
+- REQ-TEST-002: Malformed JSON Tests
+- REQ-TEST-003: Network Failure Tests
+- REQ-TEST-004: Concurrent Connection Tests
+- REQ-TEST-005: State Machine Edge Case Tests
+- REQ-TEST-006: Bluetooth Unavailability Tests
+- REQ-TEST-007: E2E Integration Tests
+- REQ-NFR-001: Backward Compatibility
+- REQ-NFR-002: Performance Baseline
+- REQ-NFR-003: Security Standards
+- REQ-NFR-004: Code Quality
 
 ## Success Criteria
 
